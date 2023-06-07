@@ -1,0 +1,27 @@
+// Import the required dependencies
+const { ethers } = require("ethers");
+const contractABI = require("./Voting.json"); // Replace with the actual ABI file path
+const contractAddress = "0xeB55DB143e9E6FCDf1271Df9EDb0c6eE6BbE3d50"; // Replace with the actual contract address
+const provider = new ethers.providers.JsonRpcProvider("http://localhost:7545"); // Replace with the URL of your custom Ganache network
+
+// Create a signer with Metamask
+const signer = new ethers.providers.Web3Provider(web3.currentProvider).getSigner();
+
+// Create an instance of the contract using the ABI and address
+const votingContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+// Test the contract functions
+(async function () {
+  // Get the total number of votes
+  const totalVotes = await votingContract.total_cntr();
+  console.log("Total Votes:", totalVotes.toString());
+
+  // Vote for choice 1
+  const voteTx = await votingContract.Vote(1);
+  await voteTx.wait();
+  console.log("Vote successful!");
+
+  // Get the voting percentage for choice 1
+  const votingPercentage = await votingContract.VotingPercentage(1);
+  console.log("Voting Percentage for Choice 1:", votingPercentage.toString());
+})();

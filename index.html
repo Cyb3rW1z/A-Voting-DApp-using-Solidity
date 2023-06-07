@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voting Front-end</title>
+</head>
+<body>
+  <h1>Voting</h1>
+  <p>Total Votes: <span id="totalVotes"></span></p>
+  <p>Voting Percentage for Candidate 1: <span id="percentage1"></span></p>
+  <p>Voting Percentage for Candidate 2: <span id="percentage2"></span></p>
+  
+  <h2>Vote</h2>
+  <button onclick="voteCandidate(1)">Vote for Candidate 1</button>
+  <button onclick="voteCandidate(2)">Vote for Candidate 2</button>
+  
+  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+  <script>
+    const contractAddress = '0xeB55DB143e9E6FCDf1271Df9EDb0c6eE6BbE3d50'; // Replace with your contract address
+    const contractABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "uint8",
+				"name": "c",
+				"type": "uint8"
+			}
+		],
+		"name": "Vote",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "user_choice",
+				"type": "uint256"
+			}
+		],
+		"name": "VotingPercentage",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "a",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "total_cntr",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+    
+    async function connectToContract() {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+      
+      return contract;
+    }
+    
+    async function updateUI() {
+      const contract = await connectToContract();
+      
+      const totalVotes = await contract.total_cntr();
+      const percentage1 = await contract.VotingPercentage(1);
+      const percentage2 = await contract.VotingPercentage(2);
+      
+      document.getElementById('totalVotes').textContent = totalVotes.toString();
+      document.getElementById('percentage1').textContent = percentage1.toString();
+      document.getElementById('percentage2').textContent = percentage2.toString();
+    }
+    
+    async function voteCandidate(candidate) {
+      const contract = await connectToContract();
+      
+      try {
+        const transaction = await contract.Vote(candidate, { value: ethers.utils.parseEther('0.1') });
+        await transaction.wait();
+        
+        console.log('Vote successful');
+        updateUI();
+      } catch (error) {
+        console.error('Failed to vote:', error);
+      }
+    }
+    
+    async function init() {
+      try {
+        await ethereum.request({ method: 'eth_requestAccounts' });
+        console.log('Connected to Ethereum');
+        
+        updateUI();
+      } catch (error) {
+        console.error('Failed to connect to Ethereum:', error);
+      }
+    }
+    
+    window.addEventListener('load', init);
+  </script>
+</body>
+</html>

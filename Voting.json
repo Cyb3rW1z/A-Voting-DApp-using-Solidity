@@ -1,0 +1,53 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "uint8",
+				"name": "c",
+				"type": "uint8"
+			}
+		],
+		"name": "Vote",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "user_choice",
+				"type": "uint256"
+			}
+		],
+		"name": "VotingPercentage",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "a",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "total_cntr",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

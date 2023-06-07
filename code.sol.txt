@@ -1,0 +1,53 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.8.2 <0.9.0;
+
+contract Voting{
+    address[] voted; //an array to save wallet addresses of people who voted
+    uint8 cntr_choice1=0; // count for number of votes for user 1
+    uint8 cntr_choice2=0; // count for number of votes for user 2
+    uint256 public total_cntr=0;
+    
+    struct Voter {
+        bool validted;  // if true, that person already voted
+        address voter_address; //address of voter
+    }
+    Voter[] private voters;
+
+    function VotingChecker(address x ) private view returns(bool) { //checks if current user already voted or not
+        for (uint i = 0; i < voted.length; i++) {
+            if (voted[i] == x) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function VotingPercentage(uint user_choice) public view returns(uint256 a){ // returns voting percentage for specified candidate
+       uint256 _total_cntr = cntr_choice1+cntr_choice2;
+        if (user_choice == 1){
+            return (_total_cntr-cntr_choice2);
+        }
+        else if (user_choice == 2){
+            return (_total_cntr-cntr_choice1);
+        }
+        else {
+            return 0;
+        }
+    }
+
+    function Vote(uint8 c)public payable returns (bool) { //the payable voting function
+        if(VotingChecker(msg.sender)){ //checks if the address of the msg send is found in the array, true if found so don't continue the voting otherwise vote
+            return false;
+        }
+        else{ // if entered the else, the voter address was not found in the array 
+            voters.push(Voter(true,msg.sender)); // add the value to the struct
+            total_cntr++; // increment the counter of total votes 
+            
+            voted.push(msg.sender); // append the address of the voter to the array 
+            if (c==1){cntr_choice1++;}  // increment the counter of votes for the first candidate     
+            else if (c == 2){cntr_choice2++;}    // increment the counter of votes for the second candidate
+        }
+        return true;
+    }
+}
