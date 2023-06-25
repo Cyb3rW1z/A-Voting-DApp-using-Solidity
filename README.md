@@ -6,7 +6,7 @@
 
 
 
-                                                        **Vote Accepted & Processed **
+                                                        Vote Accepted & Processed 
 
 
 <img width="799" alt="image" src="https://github.com/Cyb3rW1z/A-Voting-DApp-using-Solidity/assets/84410099/80562561-95e4-41f5-a35e-3d68cbccb5d4">
