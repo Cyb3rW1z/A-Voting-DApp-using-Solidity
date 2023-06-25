@@ -1,6 +1,6 @@
 # A-Voting-DApp-using-Solidity
 
-                                                    **Voting Process & Ethereum Payment **
+**Voting Process & Ethereum Payment **
 
 <img width="799" alt="image" src="https://github.com/Cyb3rW1z/A-Voting-DApp-using-Solidity/assets/84410099/510e3c96-e7c1-4f35-97e7-9108fa9856e3">
 
